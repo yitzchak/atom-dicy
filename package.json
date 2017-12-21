@@ -235,13 +235,6 @@
           ],
           "default": "right",
           "order": 3
-        },
-        "skimPath": {
-          "title": "Skim Path",
-          "description": "Full application path to Skim.",
-          "type": "string",
-          "default": "/Applications/Skim.app",
-          "order": 4
         }
       }
     }

@@ -15,7 +15,7 @@ export default class Sumatra extends Opener {
       '-reuse-instance',
       '-forward-search',
       sourcePath,
-      line,
+      line.toString(),
       '-inverse-search',
       `${atomPath}" "%f:%l"`,
       filePath
