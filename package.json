@@ -1,0 +1,249 @@
+{
+  "name": "latex-omnibus",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [],
+  "repository": "https://github.com/yitzchak/latex-omnibus",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "@dicy/client": "^0.12.3",
+    "atom-ts-transpiler": "^1.4.0",
+    "command-join": "^2.0.0",
+    "dbus-native": "^0.2.3",
+    "file-uri-to-path": "^1.0.0",
+    "file-url": "^2.0.2",
+    "fs-extra": "^5.0.0",
+    "lodash": "^4.17.4",
+    "readdir-enhanced": "^2.1.0",
+    "typescript": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/atom": "^1.22.3",
+    "@types/fs-extra": "^4.0.6",
+    "@types/lodash": "^4.14.88",
+    "@types/node": "^8.0.58"
+  },
+  "activationCommands": {
+    "atom-workspace": [
+      "latex-omnibus:build",
+      "latex-omnibus:clean",
+      "latex-omnibus:initialize",
+      "latex-omnibus:open",
+      "latex-omnibus:scrub"
+    ]
+  },
+  "activationHooks": [
+    "language-latex:grammar-used",
+    "language-tex:grammar-used",
+    "language-latexsimple:grammar-used"
+  ],
+  "atomTranspilers": [
+    {
+      "transpiler": "atom-ts-transpiler",
+      "glob": "{!(node_modules)/**/,}*.ts?(x)",
+      "options": {
+        "cacheKeyFiles": [],
+        "verbose": false
+      }
+    }
+  ],
+  "consumedServices": {
+    "atom-ide-busy-signal": {
+      "versions": {
+        "0.1.0": "consumeBusySignal"
+      }
+    },
+    "linter-indie": {
+      "versions": {
+        "2.0.0": "consumeLinterIndie"
+      }
+    }
+  },
+  "configSchema": {
+    "event": {
+      "type": "object",
+      "title": "Event",
+      "description": "Settings that control what events trigger various commands.",
+      "order": 1,
+      "collapsed": true,
+      "properties": {
+        "buildOnSave": {
+          "title": "Build after Save",
+          "description": "Automatically run build after files are saved.",
+          "type": "boolean",
+          "default": false,
+          "order": 1
+        },
+        "openAfterBuild": {
+          "title": "Open after Build",
+          "description": "Automatically open targets after build is completed.",
+          "type": "boolean",
+          "default": true,
+          "order": 2
+        },
+        "openAfterChangeCursonPosition": {
+          "title": "Open after the cursor has changed its position. If the opener supports sync and open in background then this setting will keep the position in the opener constantly syncronized with the editor.",
+          "description": "Automatically open targets after build is completed.",
+          "type": "boolean",
+          "default": false,
+          "order": 3
+        }
+      }
+    },
+    "build": {
+      "type": "object",
+      "title": "Build",
+      "description": "Settings that configure the build.",
+      "order": 2,
+      "collapsed": true,
+      "properties": {
+        "$PATH": {
+          "title": "Search Path",
+          "description": "Additional directories needed for finding TeX or viewers. Use `$PATH` to include system search path. Paths should be separated by `:` on Linux/MacOS and ';' on Windows.",
+          "type": "string",
+          "default": "$PATH"
+        },
+        "engine": {
+          "title": "Engine",
+          "description": "Select LaTeX engine",
+          "type": "string",
+          "enum": [
+            "pdflatex",
+            "lualatex",
+            "platex",
+            "uplatex",
+            "xelatex"
+          ],
+          "default": "pdflatex"
+        },
+        "shellEscape": {
+          "title": "Shell Escape",
+          "type": "string",
+          "enum": [
+            "enabled",
+            "restricted",
+            "disabled"
+          ],
+          "default": "restricted"
+        },
+        "synctex": {
+          "title": "SyncTeX",
+          "type": "boolean",
+          "default": true
+        },
+        "outputDirectory": {
+          "title": "Output Directory",
+          "description": "All files generated during a build will be redirected here. Leave blank if you want the build output to be stored in the same directory as the TeX document.",
+          "type": "string",
+          "default": ""
+        },
+        "outputFormat": {
+          "title": "Output Format",
+          "description": "Output file format.",
+          "type": "string",
+          "enum": [
+            "pdf",
+            "dvi",
+            "ps"
+          ],
+          "default": "pdf"
+        },
+        "dviToPdfEngine": {
+          "title": "DVI to PDF Engine",
+          "description": "Program to use when post-processing DVI output in order to produce PDF. This is only used for LaTeX engines not capable of natively producing PDF.",
+          "type": "string",
+          "enum": [
+            "dvipdfmx",
+            "xdvipdfmx",
+            "dvipdf"
+          ],
+          "default": "xdvipdfmx"
+        },
+        "intermediatePostScript": {
+          "title": "Generate Intermediate PostScript",
+          "description": "Enable generation of PostScript using dvips when the output format is pdf. This is only used for LaTeX engines not capable of natively producing PDF",
+          "type": "boolean",
+          "default": false
+        },
+        "copyTargetsToRoot": {
+          "title": "Copy Targets to Root Directory",
+          "description": "Ensures that the output files produced by a successful build is stored together with the TeX document that produced it.",
+          "type": "boolean",
+          "default": false
+        },
+        "cleanPatterns": {
+          "title": "Clean Patterns",
+          "description": "The files and directories to remove during a clean.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "$OUTDIR/$JOB!($OUTEXT|.synctex.gz|.tex)",
+            "/$OUTDIR/_minted-$JOB/*"
+          ]
+        }
+      }
+    },
+    "open": {
+      "type": "object",
+      "description": "Settings that determine which opener to use.",
+      "title": "Open",
+      "order": 3,
+      "collapsed": true,
+      "properties": {
+        "opener": {
+          "title": "Opener",
+          "type": "string",
+          "enum": [
+            "automatic",
+            "atril",
+            "evince",
+            "okular",
+            "pdf-view",
+            "preview",
+            "qpdfview",
+            "shell-open",
+            "skim",
+            "sumatra",
+            "xdg-open",
+            "x-reader",
+            "zathura"
+          ],
+          "default": "automatic",
+          "order": 1
+        },
+        "openInBackground": {
+          "title": "Open in Background",
+          "type": "boolean",
+          "default": true,
+          "order": 2
+        },
+        "pdfViewSplitDirection": {
+          "title": "pdf-view Split Direction",
+          "description": "Pane split direction to use for pdf-view.",
+          "type": "string",
+          "enum": [
+            "left",
+            "right",
+            "up",
+            "down"
+          ],
+          "default": "right",
+          "order": 3
+        },
+        "skimPath": {
+          "title": "Skim Path",
+          "description": "Full application path to Skim.",
+          "type": "string",
+          "default": "/Applications/Skim.app",
+          "order": 4
+        }
+      }
+    }
+  }
+}
