@@ -7,7 +7,7 @@ set theLine to "${line}" as integer
 set theFile to POSIX file "${filePath}"
 set theSource to POSIX file "${sourcePath}"
 set thePath to POSIX path of (theFile as alias)
-tell application "${atom.config.get('latex-omnibus.open.skimPath')}"
+tell application "Skim"
   if ${!this.openInBackground} then activate
   try
     set theDocs to get documents whose path is thePath
@@ -17,12 +17,18 @@ tell application "${atom.config.get('latex-omnibus.open.skimPath')}"
   tell front document to go to TeX line theLine from theSource
 end tell`
 
-    await this.execute(['osascript', '-e', script])
+    await this.executeScript(script)
   }
 
   async isAvailable (): Promise<boolean> {
-    return process.platform === 'darwin' &&
-      await this.canExecute(atom.config.get('latex-omnibus.open.skimPath'))
+    if (process.platform !== 'darwin') return false
+
+    try {
+      const { stdout } = await this.executeScript('get version of application "Skim"')
+      return !!stdout
+    } catch (error) {
+      return false
+    }
   }
 
   get name (): string {
@@ -31,5 +37,9 @@ end tell`
 
   get features (): OpenerFeature[] {
     return ['dvi', 'pdf', 'ps', 'sync', 'background']
+  }
+
+  executeScript (script: string): Promise<any> {
+    return this.execute(['osascript', '-e', script])
   }
 }
