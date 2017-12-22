@@ -3,6 +3,7 @@ import { Opener, OpenerFeature } from '../Opener'
 export default class Sumatra extends Opener {
   executablePath: string
   candidatePaths: string[] = [
+    'SumatraPDF.exe',
     'C:\\Program Files\\SumatraPDF\\SumatraPDF.exe',
     'C:\\Program Files (x86)\\SumatraPDF\\SumatraPDF.exe'
   ]
