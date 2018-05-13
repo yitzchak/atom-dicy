@@ -10,7 +10,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
-    "@dicy/client": "^0.12.3",
+    "@dicy/client": "^0.13.0",
     "atom-ts-transpiler": "^1.4.0",
     "command-join": "^2.0.0",
     "dbus-native": "^0.2.3",
