@@ -2,7 +2,7 @@
   "menu": [{
     "label": "Packages",
     "submenu": [{
-      "label": "LaTeX Omnibus",
+      "label": "DiCy",
       "submenu": [
         { "label": "Build",      "command": "dicy:build" },
         { "label": "Clean",      "command": "dicy:clean" },
