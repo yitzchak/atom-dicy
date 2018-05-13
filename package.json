@@ -1,10 +1,10 @@
 {
-  "name": "latex-omnibus",
+  "name": "dicy",
   "main": "./lib/main",
   "version": "0.0.0",
   "description": "A short description of your package",
   "keywords": [],
-  "repository": "https://github.com/yitzchak/latex-omnibus",
+  "repository": "https://github.com/yitzchak/dicy",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
@@ -29,11 +29,11 @@
   },
   "activationCommands": {
     "atom-workspace": [
-      "latex-omnibus:build",
-      "latex-omnibus:clean",
-      "latex-omnibus:initialize",
-      "latex-omnibus:open",
-      "latex-omnibus:scrub"
+      "dicy:build",
+      "dicy:clean",
+      "dicy:initialize",
+      "dicy:open",
+      "dicy:scrub"
     ]
   },
   "activationHooks": [

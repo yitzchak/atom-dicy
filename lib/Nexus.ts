@@ -49,12 +49,12 @@ export default class Nexus extends Disposable {
     this.disposables.add(
       // Add our commands
       atom.commands.add('atom-workspace', {
-        'latex-omnibus:build': this.build.bind(this),
-        'latex-omnibus:clean': this.clean.bind(this),
-        'latex-omnibus:initialize': this.initialize.bind(this),
-        'latex-omnibus:kill': this.kill.bind(this),
-        'latex-omnibus:open': this.open.bind(this),
-        'latex-omnibus:scrub': this.scrub.bind(this)
+        'dicy:build': this.build.bind(this),
+        'dicy:clean': this.clean.bind(this),
+        'dicy:initialize': this.initialize.bind(this),
+        'dicy:kill': this.kill.bind(this),
+        'dicy:open': this.open.bind(this),
+        'dicy:scrub': this.scrub.bind(this)
       }),
       // Add a disposable for the DiCy client
       new Disposable(() => this.dicy.destroy()),
@@ -78,7 +78,7 @@ export default class Nexus extends Disposable {
         }
       }),
       // If settings are changed in the build group then tell DiCy.
-      atom.config.onDidChange('latex-omnibus.build', () => {
+      atom.config.onDidChange('dicy.build', () => {
         this.updateDiCyUserOptions = true
       })
     )
@@ -269,7 +269,7 @@ export default class Nexus extends Disposable {
   }
 
   getDiCyOptions (): OptionsSource {
-    return atom.config.get('latex-omnibus.build')
+    return atom.config.get('dicy.build')
   }
 
   async runDiCy (commands: Command[], runOptions: RunDiCyOptions = {}) {
@@ -380,26 +380,26 @@ export default class Nexus extends Disposable {
   }
 
   get buildAfterSave (): boolean {
-    return !!atom.config.get('latex-omnibus.event.buildAfterSave')
+    return !!atom.config.get('dicy.event.buildAfterSave')
   }
 
   get openAfterBuild (): boolean {
-    return !!atom.config.get('latex-omnibus.event.openAfterBuild')
+    return !!atom.config.get('dicy.event.openAfterBuild')
   }
 
   get openAfterChangeCursonPosition (): boolean {
-    return !!atom.config.get('latex-omnibus.event.openAfterChangeCursonPosition')
+    return !!atom.config.get('dicy.event.openAfterChangeCursonPosition')
   }
 
   get opener (): string {
-    return atom.config.get('latex-omnibus.open.opener')
+    return atom.config.get('dicy.open.opener')
   }
 
   get openInBackground (): boolean {
-    return !!atom.config.get('latex-omnibus.open.openInBackground')
+    return !!atom.config.get('dicy.open.openInBackground')
   }
 
   get synctex (): boolean {
-    return !!atom.config.get('latex-omnibus.build.synctex')
+    return !!atom.config.get('dicy.build.synctex')
   }
 }

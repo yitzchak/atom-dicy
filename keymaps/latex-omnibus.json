@@ -1,7 +1,7 @@
 {
   "atom-text-editor[data-grammar~=\"latex\"]": {
-    "ctrl-alt-b": "latex-omnibus:build",
-    "ctrl-alt-c": "latex-omnibus:clean",
-    "ctrl-alt-o": "latex-omnibus:open"
+    "ctrl-alt-b": "dicy:build",
+    "ctrl-alt-c": "dicy:clean",
+    "ctrl-alt-o": "dicy:open"
   }
 }

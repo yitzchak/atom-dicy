@@ -12,7 +12,7 @@ export default class PdfView extends Opener {
 
     const options = {
       searchAllPanes: true,
-      split: atom.config.get('latex-omnibus.open.pdfViewSplitDirection')
+      split: atom.config.get('dicy.open.pdfViewSplitDirection')
     }
 
     const item = await atom.workspace.open(filePath, options)

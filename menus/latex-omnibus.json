@@ -4,20 +4,20 @@
     "submenu": [{
       "label": "LaTeX Omnibus",
       "submenu": [
-        { "label": "Build",      "command": "latex-omnibus:build" },
-        { "label": "Clean",      "command": "latex-omnibus:clean" },
-        { "label": "Scrub",      "command": "latex-omnibus:scrub" },
-        { "label": "Kill",       "command": "latex-omnibus:kill" },
+        { "label": "Build",      "command": "dicy:build" },
+        { "label": "Clean",      "command": "dicy:clean" },
+        { "label": "Scrub",      "command": "dicy:scrub" },
+        { "label": "Kill",       "command": "dicy:kill" },
         { "type":  "separator" },
-        { "label": "Open",       "command": "latex-omnibus:open" },
+        { "label": "Open",       "command": "dicy:open" },
         { "type":  "separator" },
-        { "label": "Initialize", "command": "latex-omnibus:initialize" }
+        { "label": "Initialize", "command": "dicy:initialize" }
       ]
     }]
   }],
   "context-menu": {
     "atom-text-editor[data-grammar~=\"latex\"]": [
-      { "label": "DiCy Open", "command": "latex-omnibus:open" }
+      { "label": "DiCy Open", "command": "dicy:open" }
     ]
   }
 }

@@ -17,7 +17,7 @@ export abstract class Opener extends Disposable {
   abstract get features (): OpenerFeature[]
 
   get openInBackground (): boolean {
-    return !!atom.config.get('latex-omnibus.open.openInBackground')
+    return !!atom.config.get('dicy.open.openInBackground')
   }
 
   canExecute (filePath: string): Promise<boolean> {
@@ -43,7 +43,7 @@ export abstract class Opener extends Disposable {
       env: Object.assign({}, process.env),
       shell: true
     }
-    const pathSetting: string = atom.config.get('latex-omnibus.build.$PATH')
+    const pathSetting: string = atom.config.get('dicy.build.$PATH')
 
     if (pathSetting) {
       processOptions.env[process.platform === 'win32' ? 'Path' : 'PATH'] =
