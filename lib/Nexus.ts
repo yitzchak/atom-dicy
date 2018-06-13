@@ -11,7 +11,7 @@ import { Opener, OpenerFeature } from './Opener'
 const SCOPE_PATTERN = /^(text\.tex(?:\.latex|\.latex\.knitr|\.latex\.haskell|\.latex\.agda)?|source.pweave.latex)$/
 
 function editorIsLaTeX (editor: TextEditor | undefined): boolean {
-  return !!editor && SCOPE_PATTERN.test(editor.getRootScopeDescriptor().scopes.join(''))
+  return !!editor && SCOPE_PATTERN.test(editor.getRootScopeDescriptor().getScopesArray().join(''))
 }
 
 interface FileDetails {
@@ -237,9 +237,8 @@ export default class Nexus extends Disposable {
       return
     }
 
-    const scope = editor.getRootScopeDescriptor().scopes.join('')
     if (!editorIsLaTeX(editor)) {
-      this.warning(`File does not have a LaTeX grammar and therefore cannot be processed by DiCy.`)
+      this.warning(`File does not have a grammar that can be processed by DiCy.`)
       return
     }
 
