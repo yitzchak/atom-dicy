@@ -373,7 +373,7 @@ export default class Nexus extends Disposable {
   }
 
   consumeLinterIndie (registerIndie: any): Disposable {
-    this.linter = registerIndie({ name: 'LaTeX Omnibus' })
+    this.linter = registerIndie({ name: 'DiCy' })
     this.disposables.add(this.linter)
 
     return this.linter
