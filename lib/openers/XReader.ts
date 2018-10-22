@@ -10,7 +10,10 @@ export default class XReader extends Evince {
     daemonObject: '/org/x/reader/Daemon',
     daemonInterface: 'org.x.reader.Daemon',
 
-    windowInterface: 'org.x.reader.Window'
+    windowInterface: 'org.x.reader.Window',
+
+    fdApplicationObject: '/org/gtk/Application/anonymous',
+    fdApplicationInterface: 'org.freedesktop.Application'
   }
 
   get name (): string {

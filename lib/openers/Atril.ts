@@ -10,7 +10,10 @@ export default class AtrilOpener extends Evince {
     daemonObject: '/org/mate/atril/Daemon',
     daemonInterface: 'org.mate.atril.Daemon',
 
-    windowInterface: 'org.mate.atril.Window'
+    windowInterface: 'org.mate.atril.Window',
+
+    fdApplicationObject: '/org/gtk/Application/anonymous',
+    fdApplicationInterface: 'org.freedesktop.Application'
   }
 
   get name (): string {

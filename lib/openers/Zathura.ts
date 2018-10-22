@@ -4,7 +4,7 @@ export default class Zathura extends Opener {
   async open (filePath: string, sourcePath: string, line: number): Promise<void> {
     const atomPath = process.argv[0]
 
-    await this.execute([
+    this.execute([
       'zathura',
       `--synctex-editor-command="${atomPath}" "%{input}:%{line}"`,
       `--synctex-forward=${line}:1:${sourcePath}`,

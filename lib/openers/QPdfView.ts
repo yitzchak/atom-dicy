@@ -2,7 +2,7 @@ import { Opener, OpenerFeature } from '../Opener'
 
 export default class Qpdfview extends Opener {
   async open (filePath: string, sourcePath: string, line: number): Promise<void> {
-    await this.execute([
+    this.execute([
       'qpdfview',
       '--unique',
       `${filePath}#src:${sourcePath}:${line}:0`

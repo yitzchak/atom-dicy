@@ -36,7 +36,7 @@ interface EvinceWindow extends EventEmitter {
   on (signal: 'DocumentLoaded', callback: (uri: string) => void): this
 }
 
-interface FreedDesktopApplication {
+interface FreeDesktopApplication {
   Activate (platformData: { [ name: string ]: any }, callback?: (error: any) => void): void
   ActivateAction (actionName: string, parameter: string[], platformData: { [ name: string ]: any }, callback?: (error: any) => void): void
   Open (uris: string[], platformData: { [ name: string ]: any }, callback?: (error: any) => void): void
@@ -45,7 +45,7 @@ interface FreedDesktopApplication {
 interface WindowInstance {
   evinceWindow: EvinceWindow
   onClosed: () => void,
-  fdApplication?: FreedDesktopApplication
+  fdApplication?: FreeDesktopApplication
 }
 
 function syncSource (uri: string, point: [number, number]) {
@@ -66,7 +66,7 @@ export default class Evince extends Opener {
 
     windowInterface: 'org.gnome.evince.Window',
 
-    fdApplicationObject: '/org/gtk/Application/anonymous',
+    fdApplicationObject: '/org/gnome/Evince',
     fdApplicationInterface: 'org.freedesktop.Application'
   }
   bus: any
@@ -120,8 +120,10 @@ export default class Evince extends Opener {
     }
 
     if (this.dbusNames.fdApplicationObject && this.dbusNames.fdApplicationInterface) {
-      // Get the GTK/FreeDesktop application interface so we can activate the window
-      windowInstance.fdApplication = await this.getInterface(documentName, this.dbusNames.fdApplicationObject, this.dbusNames.fdApplicationInterface)
+      try {
+        // Get the GTK/FreeDesktop application interface so we can activate the window
+        windowInstance.fdApplication = await this.getInterface(documentName, this.dbusNames.fdApplicationObject, this.dbusNames.fdApplicationInterface)
+      } catch (err) {}
     }
 
     windowInstance.evinceWindow.on('SyncSource', syncSource)

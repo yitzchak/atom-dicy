@@ -174,7 +174,7 @@ export default class Nexus extends Disposable {
     const opener: Opener | undefined = this.findOpener(filePath)
 
     if (opener) {
-      return opener.open(filePath, sourcePath, line)
+      await opener.open(filePath, sourcePath, line)
     } else {
       this.warning(`No opener found that can open ${filePath}.`)
     }
