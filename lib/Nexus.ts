@@ -230,15 +230,17 @@ export default class Nexus extends Disposable {
 
     if (!editor) return
 
-    let file: string | undefined = editor.getPath()
+    const source: string | undefined = editor.getPath()
 
-    if (!file) {
+    if (!source) {
       this.warning('File needs to be saved before it can be processed by DiCy.')
       return
     }
 
+    let file: string = source
+
     if (!editorIsLaTeX(editor)) {
-      this.warning(`File does not have a grammar that can be processed by DiCy.`)
+      this.warning('File does not have a grammar that can be processed by DiCy.')
       return
     }
 
