@@ -128,7 +128,7 @@ export default class Nexus extends Disposable {
 
         if (message.log) {
           linterMessage.reference = {
-            file: url2path(message.log.file),
+            file: url2path(message.log.file)
           }
           if (message.log.range) {
             linterMessage.reference.position = [message.log.range.start - 1, 0]

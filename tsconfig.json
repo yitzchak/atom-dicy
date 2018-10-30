@@ -7,16 +7,12 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "outDir": "lib",
     "pretty": true,
     "sourceMap": false,
     "strictNullChecks": true,
     "target": "ES2015"
   },
   "include": [
-    "packages/*/src",
-    "packages/*/spec",
-    "packages/*/ext-types",
-    "ext-types"
+    "lib"
   ]
 }

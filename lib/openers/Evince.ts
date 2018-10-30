@@ -81,13 +81,11 @@ export default class Evince extends Opener {
   }
 
   async isAvailable (): Promise<boolean> {
-    try {
-      if (process.platform === 'linux') {
-        const dbus = require('dbus-native')
-        this.bus = dbus.sessionBus()
-        this.daemon = await this.findInterface(this.dbusNames.daemonService, this.dbusNames.daemonObject, this.dbusNames.daemonInterface)
-      }
-    } catch (e) {}
+    if (process.platform === 'linux') {
+      const dbus = require('dbus-native')
+      this.bus = dbus.sessionBus()
+      this.daemon = await this.findInterface(this.dbusNames.daemonService, this.dbusNames.daemonObject, this.dbusNames.daemonInterface)
+    }
 
     return !!this.daemon
   }
@@ -146,7 +144,7 @@ export default class Evince extends Opener {
   async open (filePath: string, sourcePath: string, line: number): Promise<void> {
     const windowInstance = await this.getWindow(filePath, sourcePath)
     if (!this.openInBackground && windowInstance.fdApplication) {
-      windowInstance.fdApplication.Activate({}, )
+      windowInstance.fdApplication.Activate({})
     }
 
     // SyncView seems to want to activate the window sometimes
@@ -157,7 +155,7 @@ export default class Evince extends Opener {
     return new Promise((resolve, reject) => {
       this.bus.getInterface(serviceName, objectPath, interfaceName, (error: any, interfaceInstance: any) => {
         if (error) {
-          reject(error)
+          resolve()
         } else {
           resolve(interfaceInstance)
         }
@@ -167,9 +165,8 @@ export default class Evince extends Opener {
 
   async findInterface (serviceName: string, objectPaths: string[], interfaceName: string): Promise<any> {
     for (const objectPath of objectPaths) {
-      try {
-        return await this.getInterface(serviceName, objectPath, interfaceName)
-      } catch (err) {}
+      const iface = await this.getInterface(serviceName, objectPath, interfaceName)
+      if (iface) return iface
     }
   }
 
