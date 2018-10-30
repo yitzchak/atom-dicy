@@ -5,16 +5,16 @@ import * as url from 'url'
 import { Opener, OpenerFeature } from '../Opener'
 
 export interface DBusNames {
-  applicationObject: string,
+  applicationObject: string[],
   applicationInterface: string,
 
   daemonService: string,
-  daemonObject: string,
+  daemonObject: string[],
   daemonInterface: string,
 
   windowInterface: string,
 
-  fdApplicationObject?: string,
+  fdApplicationObject?: string[],
   fdApplicationInterface?: string
 }
 
@@ -57,16 +57,16 @@ function syncSource (uri: string, point: [number, number]) {
 export default class Evince extends Opener {
   windows: Map<string, WindowInstance> = new Map<string, WindowInstance>()
   dbusNames: DBusNames = {
-    applicationObject: '/org/gnome/evince/Evince',
+    applicationObject: ['/org/gnome/evince/Evince'],
     applicationInterface: 'org.gnome.evince.Application',
 
     daemonService: 'org.gnome.evince.Daemon',
-    daemonObject: '/org/gnome/evince/Daemon',
+    daemonObject: ['/org/gnome/evince/Daemon'],
     daemonInterface: 'org.gnome.evince.Daemon',
 
     windowInterface: 'org.gnome.evince.Window',
 
-    fdApplicationObject: '/org/gnome/Evince',
+    fdApplicationObject: ['/org/gtk/Application/anonymous', '/org/gnome/Evince'],
     fdApplicationInterface: 'org.freedesktop.Application'
   }
   bus: any
@@ -85,7 +85,7 @@ export default class Evince extends Opener {
       if (process.platform === 'linux') {
         const dbus = require('dbus-native')
         this.bus = dbus.sessionBus()
-        this.daemon = await this.getInterface(this.dbusNames.daemonService, this.dbusNames.daemonObject, this.dbusNames.daemonInterface)
+        this.daemon = await this.findInterface(this.dbusNames.daemonService, this.dbusNames.daemonObject, this.dbusNames.daemonInterface)
       }
     } catch (e) {}
 
@@ -109,21 +109,19 @@ export default class Evince extends Opener {
     const documentName = await this.findDocument(filePath)
 
     // Get the application interface and get the window list of the application
-    const evinceApplication: EvinceApplication = await this.getInterface(documentName, this.dbusNames.applicationObject, this.dbusNames.applicationInterface)
+    const evinceApplication: EvinceApplication = await this.findInterface(documentName, this.dbusNames.applicationObject, this.dbusNames.applicationInterface)
     const windowNames: string[] = await this.getWindowList(evinceApplication)
 
     // Get the window interface of the of the first (only) window
     const onClosed = () => this.disposeWindow(filePath)
     windowInstance = {
-      evinceWindow: await this.getInterface(documentName, windowNames[0], this.dbusNames.windowInterface),
+      evinceWindow: await this.findInterface(documentName, windowNames, this.dbusNames.windowInterface),
       onClosed
     }
 
     if (this.dbusNames.fdApplicationObject && this.dbusNames.fdApplicationInterface) {
-      try {
-        // Get the GTK/FreeDesktop application interface so we can activate the window
-        windowInstance.fdApplication = await this.getInterface(documentName, this.dbusNames.fdApplicationObject, this.dbusNames.fdApplicationInterface)
-      } catch (err) {}
+      // Get the GTK/FreeDesktop application interface so we can activate the window
+      windowInstance.fdApplication = await this.findInterface(documentName, this.dbusNames.fdApplicationObject, this.dbusNames.fdApplicationInterface)
     }
 
     windowInstance.evinceWindow.on('SyncSource', syncSource)
@@ -165,6 +163,14 @@ export default class Evince extends Opener {
         }
       })
     })
+  }
+
+  async findInterface (serviceName: string, objectPaths: string[], interfaceName: string): Promise<any> {
+    for (const objectPath of objectPaths) {
+      try {
+        return await this.getInterface(serviceName, objectPath, interfaceName)
+      } catch (err) {}
+    }
   }
 
   getWindowList (evinceApplication: EvinceApplication): Promise<string[]> {
