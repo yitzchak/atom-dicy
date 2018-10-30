@@ -25,7 +25,8 @@
     "@types/atom": "^1.22.3",
     "@types/fs-extra": "^4.0.6",
     "@types/lodash": "^4.14.88",
-    "@types/node": "^8.0.58"
+    "@types/node": "^8.0.58",
+    "@types/readdir-enhanced": "^2.2.0"
   },
   "activationCommands": {
     "atom-workspace": [
