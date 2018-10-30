@@ -101,9 +101,9 @@
           "default": true,
           "order": 2
         },
-        "openAfterChangeCursonPosition": {
-          "title": "Open after the cursor has changed its position. If the opener supports sync and open in background then this setting will keep the position in the opener constantly syncronized with the editor.",
-          "description": "Automatically open targets after build is completed.",
+        "openAfterChangeCursorPosition": {
+          "title": "Open after the cursor has changed its position.",
+          "description": "Automatically syncronize the opener with the current cursor position. This will only work if the opener supports SyncTeX.",
           "type": "boolean",
           "default": false,
           "order": 3

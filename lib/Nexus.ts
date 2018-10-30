@@ -37,6 +37,7 @@ const SYNCTEX_PATTERN = /\.synctex(?:\.gz)?$/i
 export default class Nexus extends Disposable {
   disposables: CompositeDisposable = new CompositeDisposable()
   dicy: DiCy = new DiCy(true)
+  dicyLock: Set<string> = new Set<string>()
   updateDiCyUserOptions: boolean = true
   busyService: any
   linter: any
@@ -64,15 +65,13 @@ export default class Nexus extends Disposable {
           this.disposables.add(editor.onDidSave(() => {
             const activeEditor = atom.workspace.getActiveTextEditor()
             if (editor === activeEditor && this.buildAfterSave) {
-              this.build()
+              return this.build()
             }
           }))
-          let inProgress = false
-          this.disposables.add(editor.onDidChangeCursorPosition(() => {
+          this.disposables.add(editor.onDidChangeCursorPosition(event => {
             const activeEditor = atom.workspace.getActiveTextEditor()
-            if (!inProgress && editor === activeEditor && this.openAfterChangeCursonPosition) {
-              inProgress = true
-              this.open(false).then(() => { inProgress = false })
+            if (editor === activeEditor && this.openAfterChangeCursorPosition && event.newBufferPosition.row !== event.oldBufferPosition.row) {
+              return this.open(false)
             }
           }))
         }
@@ -276,10 +275,15 @@ export default class Nexus extends Disposable {
   async runDiCy (commands: Command[], runOptions: RunDiCyOptions = {}) {
     const details: FileDetails | undefined = await this.initializeDiCy(runOptions.options)
 
-    if (details) {
-      let busy: any
-      let success: boolean = true
+    // Don't allow multiple jobs to run on the same root file.
+    if (!details || this.dicyLock.has(details.root)) return
 
+    this.dicyLock.add(details.root)
+
+    let busy: any
+    let success: boolean = true
+
+    try {
       if (this.busyService && runOptions.busyText) {
         busy = this.busyService.reportBusy(`Running ${runOptions.busyText} command on ${details.root}`)
       }
@@ -300,8 +304,9 @@ export default class Nexus extends Disposable {
           }
         }
       }
-
+    } finally {
       if (busy) busy.dispose()
+      this.dicyLock.delete(details.root)
     }
   }
 
@@ -388,8 +393,8 @@ export default class Nexus extends Disposable {
     return !!atom.config.get('dicy.event.openAfterBuild')
   }
 
-  get openAfterChangeCursonPosition (): boolean {
-    return !!atom.config.get('dicy.event.openAfterChangeCursonPosition')
+  get openAfterChangeCursorPosition (): boolean {
+    return !!atom.config.get('dicy.event.openAfterChangeCursorPosition')
   }
 
   get opener (): string {
