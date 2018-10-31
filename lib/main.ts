@@ -4,6 +4,7 @@ let nexus: Nexus | null
 
 export function activate () {
   nexus = new Nexus()
+  return nexus.initialize(false)
 }
 
 export function deactivate () {

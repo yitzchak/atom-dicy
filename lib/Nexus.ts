@@ -84,8 +84,6 @@ export default class Nexus extends Disposable {
     )
 
     this.dicy.on('log', this.addMessages.bind(this))
-
-    this.initialize(false)
   }
 
   clearMessages (file: string) {
