@@ -51,7 +51,7 @@ interface WindowInstance {
 function syncSource (uri: string, point: [number, number]) {
   const filePath = decodeURI(url.parse(uri).pathname || '')
   atom.focus()
-  atom.workspace.open(filePath).then(editor => (editor as TextEditor).setCursorBufferPosition(point))
+  const foo = atom.workspace.open(filePath).then(editor => (editor as TextEditor).setCursorBufferPosition(point))
 }
 
 export default class Evince extends Opener {

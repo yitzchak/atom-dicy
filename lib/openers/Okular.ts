@@ -20,7 +20,7 @@ export default class Okular extends Opener {
       hash: encodeURI(`src:${line} ${sourcePath}`)
     }))
 
-    this.execute(args)
+    await this.execute(args)
   }
 
   async isAvailable (): Promise<boolean> {

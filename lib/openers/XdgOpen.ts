@@ -2,7 +2,7 @@ import { Opener, OpenerFeature } from '../Opener'
 
 export default class XdgOpen extends Opener {
   async open (filePath: string, sourcePath: string, line: number): Promise<void> {
-    this.execute(['xdg-open', filePath])
+    await this.execute(['xdg-open', filePath])
   }
 
   async isAvailable (): Promise<boolean> {

@@ -10,7 +10,7 @@ export default class Preview extends Opener {
 
     args.push('-a', 'Preview.app', filePath)
 
-    this.execute(args)
+    await this.execute(args)
   }
 
   async isAvailable (): Promise<boolean> {
