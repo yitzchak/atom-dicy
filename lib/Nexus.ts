@@ -281,9 +281,7 @@ export default class Nexus extends Disposable {
     // Don't allow multiple jobs to run on the same root file.
     if (this.locks.has(details.root)) {
       if (runOptions.lockNotify) {
-        atom.notifications.addInfo('DiCy commands ignored', {
-          detail: `Commands "${commands.join(', ')}"  were not run on "${details.root}" because DiCy is currently busy running other commands.`
-        })
+        this.info('DiCy commands ignored', `Commands \`${commands.join('`, `')}\`  were not run on \`${details.root}\` because DiCy is currently busy running other commands.`)
       }
       return
     }
