@@ -25,6 +25,7 @@ interface RunDiCyOptions {
   clearMessages?: boolean
   options?: OptionsSource
   openTargets?: boolean
+  lockNotify?: boolean
 }
 
 const ROOT_MAGIC_PATTERN = /^%\s*!T[eE]X\s+root\s*=\s*(.*?)\s*$/gm
@@ -37,7 +38,7 @@ const SYNCTEX_PATTERN = /\.synctex(?:\.gz)?$/i
 export default class Nexus extends Disposable {
   disposables: CompositeDisposable = new CompositeDisposable()
   dicy: DiCy = new DiCy(true)
-  dicyLock: Set<string> = new Set<string>()
+  locks: Set<string> = new Set<string>()
   updateDiCyUserOptions: boolean = true
   busyService: any
   linter: any
@@ -71,7 +72,7 @@ export default class Nexus extends Disposable {
           this.disposables.add(editor.onDidChangeCursorPosition(event => {
             const activeEditor = atom.workspace.getActiveTextEditor()
             if (editor === activeEditor && this.openAfterChangeCursorPosition && event.newBufferPosition.row !== event.oldBufferPosition.row) {
-              return this.open(false)
+              return this.open(false, false)
             }
           }))
         }
@@ -275,10 +276,19 @@ export default class Nexus extends Disposable {
   async runDiCy (commands: Command[], runOptions: RunDiCyOptions = {}) {
     const details: FileDetails | undefined = await this.initializeDiCy(runOptions.options)
 
-    // Don't allow multiple jobs to run on the same root file.
-    if (!details || this.dicyLock.has(details.root)) return
+    if (!details) return
 
-    this.dicyLock.add(details.root)
+    // Don't allow multiple jobs to run on the same root file.
+    if (this.locks.has(details.root)) {
+      if (runOptions.lockNotify) {
+        atom.notifications.addInfo('DiCy commands ignored', {
+          detail: `Commands "${commands.join(', ')}"  were not run on "${details.root}" because DiCy is currently busy running other commands.`
+        })
+      }
+      return
+    }
+
+    this.locks.add(details.root)
 
     let busy: any
     let success: boolean = true
@@ -306,14 +316,15 @@ export default class Nexus extends Disposable {
       }
     } finally {
       if (busy) busy.dispose()
-      this.dicyLock.delete(details.root)
+      this.locks.delete(details.root)
     }
   }
 
-  build (): Promise<void> {
+  build (lockNotify: boolean = true): Promise<void> {
     return this.runDiCy(['load', 'build', 'log', 'save'], {
       busyText: 'build',
       clearMessages: true,
+      lockNotify,
       openTargets: this.openAfterBuild,
       options: {
         severity: 'info'
@@ -321,28 +332,31 @@ export default class Nexus extends Disposable {
     })
   }
 
-  clean (): Promise<void> {
+  clean (lockNotify: boolean = true): Promise<void> {
     return this.runDiCy(['load', 'clean', 'save'], {
       busyText: 'clean',
       clearMessages: true,
+      lockNotify,
       options: {
         severity: 'info'
       }
     })
   }
 
-  scrub (): Promise<void> {
+  scrub (lockNotify: boolean = true): Promise<void> {
     return this.runDiCy(['load', 'scrub', 'save'], {
       busyText: 'scrub',
       clearMessages: true,
+      lockNotify,
       options: {
         severity: 'info'
       }
     })
   }
 
-  open (load: boolean = true): Promise<void> {
+  open (lockNotify: boolean = true, load: boolean = true): Promise<void> {
     return this.runDiCy(load ? ['load'] : [], {
+      lockNotify,
       openTargets: true
     })
   }
