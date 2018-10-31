@@ -174,7 +174,7 @@ export default class Nexus extends Disposable {
     if (opener) {
       await opener.open(filePath, sourcePath, line)
     } else {
-      this.warning(`No opener found that can open ${filePath}.`)
+      this.warning('No available opener', `No opener found that can open \`${filePath}\`.`)
     }
   }
 
@@ -228,14 +228,15 @@ export default class Nexus extends Disposable {
 
     if (!editor) return
 
-    const source: string | undefined = editor.getPath()
+    const editorPath: string | undefined = editor.getPath()
 
-    if (!source) {
+    if (!editorPath) {
       this.warning('File needs to be saved before it can be processed by DiCy.')
       return
     }
 
-    let file: string = source
+    let file: string = editorPath
+    let root: string = editorPath
 
     if (!editorIsLaTeX(editor)) {
       this.warning('File does not have a grammar that can be processed by DiCy.')
@@ -246,11 +247,11 @@ export default class Nexus extends Disposable {
     const line = position.row + 1
 
     editor.scan(ROOT_MAGIC_PATTERN, params => {
-      file = path.resolve(path.dirname(file), params.match[1])
+      root = path.resolve(path.dirname(root), params.match[1])
       params.stop()
     })
 
-    const root: string = fileUrl(file)
+    root = fileUrl(root)
 
     if (options) {
       await this.dicy.setInstanceOptions(root, options)
