@@ -56,7 +56,8 @@ export default class Nexus extends Disposable {
         'dicy:initialize': this.initialize.bind(this),
         'dicy:kill': this.kill.bind(this),
         'dicy:open': this.open.bind(this),
-        'dicy:scrub': this.scrub.bind(this)
+        'dicy:scrub': this.scrub.bind(this),
+        'dicy:sync': this.sync.bind(this)
       }),
       // Add a disposable for the DiCy client
       new Disposable(() => this.dicy.destroy()),
@@ -72,7 +73,7 @@ export default class Nexus extends Disposable {
           this.disposables.add(editor.onDidChangeCursorPosition(event => {
             const activeEditor = atom.workspace.getActiveTextEditor()
             if (editor === activeEditor && this.openAfterChangeCursorPosition && event.newBufferPosition.row !== event.oldBufferPosition.row) {
-              return this.open(false, false)
+              return this.sync()
             }
           }))
         }
@@ -317,11 +318,11 @@ export default class Nexus extends Disposable {
     }
   }
 
-  build (lockNotify: boolean = true): Promise<void> {
+  build (): Promise<void> {
     return this.runDiCy(['load', 'build', 'log', 'save'], {
       busyText: 'build',
       clearMessages: true,
-      lockNotify,
+      lockNotify: true,
       openTargets: this.openAfterBuild,
       options: {
         severity: 'info'
@@ -329,31 +330,37 @@ export default class Nexus extends Disposable {
     })
   }
 
-  clean (lockNotify: boolean = true): Promise<void> {
+  clean (): Promise<void> {
     return this.runDiCy(['load', 'clean', 'save'], {
       busyText: 'clean',
       clearMessages: true,
-      lockNotify,
+      lockNotify: true,
       options: {
         severity: 'info'
       }
     })
   }
 
-  scrub (lockNotify: boolean = true): Promise<void> {
+  scrub (): Promise<void> {
     return this.runDiCy(['load', 'scrub', 'save'], {
       busyText: 'scrub',
       clearMessages: true,
-      lockNotify,
+      lockNotify : true,
       options: {
         severity: 'info'
       }
     })
   }
 
-  open (lockNotify: boolean = true, load: boolean = true): Promise<void> {
-    return this.runDiCy(load ? ['load'] : [], {
-      lockNotify,
+  open (): Promise<void> {
+    return this.runDiCy(['load'], {
+      lockNotify: true,
+      openTargets: true
+    })
+  }
+
+  sync (): Promise<void> {
+    return this.runDiCy([], {
       openTargets: true
     })
   }

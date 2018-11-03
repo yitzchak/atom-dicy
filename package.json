@@ -49,7 +49,8 @@
       "dicy:clean",
       "dicy:initialize",
       "dicy:open",
-      "dicy:scrub"
+      "dicy:scrub",
+      "dicy:sync"
     ]
   },
   "activationHooks": [
