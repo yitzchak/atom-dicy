@@ -1,10 +1,14 @@
 {
   "name": "dicy",
   "main": "./lib/main",
-  "version": "0.0.0",
-  "description": "A short description of your package",
-  "keywords": [],
-  "repository": "https://github.com/yitzchak/dicy",
+  "version": "0.1.0",
+  "description": "Compile LaTeX, knitr, literate Agda, literate Haskell and Pweave documents using DiCy.",
+  "keywords": [
+    "tex",
+    "latex",
+    "dicy"
+  ],
+  "repository": "https://github.com/yitzchak/atom-dicy",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
@@ -86,7 +90,7 @@
       "title": "Event",
       "description": "Settings that control what events trigger various commands.",
       "order": 1,
-      "collapsed": true,
+      "collapsed": false,
       "properties": {
         "buildOnSave": {
           "title": "Build after Save",
@@ -103,10 +107,59 @@
           "order": 2
         },
         "openAfterChangeCursorPosition": {
-          "title": "Open after the cursor has changed its position.",
+          "title": "Open after Cursor Change",
           "description": "Automatically syncronize the opener with the current cursor position. This will only work if the opener supports SyncTeX.",
           "type": "boolean",
           "default": false,
+          "order": 3
+        }
+      }
+    },
+    "open": {
+      "type": "object",
+      "description": "Settings that determine which opener to use.",
+      "title": "Open",
+      "order": 2,
+      "collapsed": false,
+      "properties": {
+        "opener": {
+          "title": "Opener",
+          "type": "string",
+          "enum": [
+            "automatic",
+            "atril",
+            "evince",
+            "okular",
+            "pdf-view",
+            "preview",
+            "qpdfview",
+            "shell-open",
+            "skim",
+            "sumatra",
+            "xdg-open",
+            "x-reader",
+            "zathura"
+          ],
+          "default": "automatic",
+          "order": 1
+        },
+        "openInBackground": {
+          "title": "Open in Background",
+          "type": "boolean",
+          "default": true,
+          "order": 2
+        },
+        "pdfViewSplitDirection": {
+          "title": "pdf-view Split Direction",
+          "description": "Pane split direction to use for pdf-view.",
+          "type": "string",
+          "enum": [
+            "left",
+            "right",
+            "up",
+            "down"
+          ],
+          "default": "right",
           "order": 3
         }
       }
@@ -115,8 +168,8 @@
       "type": "object",
       "title": "Build",
       "description": "Settings that configure the build.",
-      "order": 2,
-      "collapsed": true,
+      "order": 3,
+      "collapsed": false,
       "properties": {
         "$PATH": {
           "title": "Search Path",
@@ -203,55 +256,6 @@
             "$OUTDIR/$JOB!($OUTEXT|.synctex.gz|.tex)",
             "/$OUTDIR/_minted-$JOB/*"
           ]
-        }
-      }
-    },
-    "open": {
-      "type": "object",
-      "description": "Settings that determine which opener to use.",
-      "title": "Open",
-      "order": 3,
-      "collapsed": true,
-      "properties": {
-        "opener": {
-          "title": "Opener",
-          "type": "string",
-          "enum": [
-            "automatic",
-            "atril",
-            "evince",
-            "okular",
-            "pdf-view",
-            "preview",
-            "qpdfview",
-            "shell-open",
-            "skim",
-            "sumatra",
-            "xdg-open",
-            "x-reader",
-            "zathura"
-          ],
-          "default": "automatic",
-          "order": 1
-        },
-        "openInBackground": {
-          "title": "Open in Background",
-          "type": "boolean",
-          "default": true,
-          "order": 2
-        },
-        "pdfViewSplitDirection": {
-          "title": "pdf-view Split Direction",
-          "description": "Pane split direction to use for pdf-view.",
-          "type": "string",
-          "enum": [
-            "left",
-            "right",
-            "up",
-            "down"
-          ],
-          "default": "right",
-          "order": 3
         }
       }
     }
