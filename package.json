@@ -108,9 +108,9 @@
           "default": true,
           "order": 2
         },
-        "openAfterChangeCursorPosition": {
-          "title": "Open after Cursor Change",
-          "description": "Automatically syncronize the opener with the current cursor position. This will only work if the opener supports SyncTeX.",
+        "syncAfterChangeCursorPosition": {
+          "title": "Sync after Cursor Change",
+          "description": "Automatically synchronize the opener with the current cursor position. This will only work if the opener supports SyncTeX.",
           "type": "boolean",
           "default": false,
           "order": 3

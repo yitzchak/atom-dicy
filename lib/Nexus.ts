@@ -73,7 +73,7 @@ export default class Nexus extends Disposable {
           }))
           this.disposables.add(editor.onDidChangeCursorPosition(event => {
             const activeEditor = atom.workspace.getActiveTextEditor()
-            if (editor === activeEditor && this.openAfterChangeCursorPosition && event.newBufferPosition.row !== event.oldBufferPosition.row) {
+            if (editor === activeEditor && this.syncAfterChangeCursorPosition && event.newBufferPosition.row !== event.oldBufferPosition.row) {
               return this.sync()
             }
           }))
@@ -416,8 +416,8 @@ export default class Nexus extends Disposable {
     return !!atom.config.get('dicy.event.openAfterBuild')
   }
 
-  get openAfterChangeCursorPosition (): boolean {
-    return !!atom.config.get('dicy.event.openAfterChangeCursorPosition')
+  get syncAfterChangeCursorPosition (): boolean {
+    return !!atom.config.get('dicy.event.syncAfterChangeCursorPosition')
   }
 
   get opener (): string {
