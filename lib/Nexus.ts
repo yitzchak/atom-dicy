@@ -55,6 +55,7 @@ export default class Nexus extends Disposable {
         'dicy:clean': this.clean.bind(this),
         'dicy:initialize': this.initialize.bind(this),
         'dicy:kill': this.kill.bind(this),
+        'dicy:kill-all': this.killAll.bind(this),
         'dicy:open': this.open.bind(this),
         'dicy:scrub': this.scrub.bind(this),
         'dicy:sync': this.sync.bind(this)
@@ -369,6 +370,10 @@ export default class Nexus extends Disposable {
     const details: FileDetails | undefined = await this.initializeDiCy()
 
     if (details) await this.dicy.kill(details.root)
+  }
+
+  async killAll (): Promise<void> {
+    await this.dicy.killAll()
   }
 
   /** Show an informational notification. */

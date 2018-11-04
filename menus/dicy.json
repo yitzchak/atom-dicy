@@ -8,6 +8,7 @@
         { "label": "Clean",      "command": "dicy:clean" },
         { "label": "Scrub",      "command": "dicy:scrub" },
         { "label": "Kill",       "command": "dicy:kill" },
+        { "label": "Kill All",   "command": "dicy:kill-all" },
         { "type":  "separator" },
         { "label": "Open",       "command": "dicy:open" },
         { "type":  "separator" },
