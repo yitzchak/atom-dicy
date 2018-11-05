@@ -53,7 +53,7 @@ that the sub-document has a TeX magic root statement such as
 | `dicy:kill`       |                     None                    | Terminate build associated with current file.                     |
 | `dicy:kill-all`   |                     None                    | Terminate all builds in progress.                                 |
 | `dicy:open`       | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>o</kbd> | Open build results and sync.                                      |
-| `dicy:sync`       | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>s</kbd> | Open build results and sync without loading from DiCy file cache. |
+| `dicy:sync`       |                     None                    | Open build results and sync without loading from DiCy file cache. |
 | `dicy:initialize` |                     None                    | Initialize file openers, etc.                                     |
 
 ## Configuration

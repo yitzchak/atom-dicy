@@ -2,7 +2,6 @@
   "atom-text-editor[data-grammar~=\"latex\"]": {
     "ctrl-alt-b": "dicy:build",
     "ctrl-alt-c": "dicy:clean",
-    "ctrl-alt-o": "dicy:open",
-    "ctrl-alt-s": "dicy:sync"
+    "ctrl-alt-o": "dicy:open"
   }
 }
