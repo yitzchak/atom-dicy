@@ -1,7 +1,7 @@
 {
   "name": "dicy",
   "main": "./lib/main",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Compile LaTeX, knitr, literate Agda, literate Haskell and Pweave documents using DiCy.",
   "keywords": [
     "tex",
