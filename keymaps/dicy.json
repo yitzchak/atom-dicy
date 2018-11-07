@@ -1,5 +1,5 @@
 {
-  "atom-text-editor[data-grammar~=\"latex\"]": {
+  "atom-text-editor[data-grammar~=\"latex\"], atom-text-editor[data-grammar~=\"pweave\"]": {
     "ctrl-alt-b": "dicy:build",
     "ctrl-alt-c": "dicy:clean",
     "ctrl-alt-o": "dicy:open"

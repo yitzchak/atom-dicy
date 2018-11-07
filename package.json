@@ -14,7 +14,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
-    "@dicy/client": "^0.14.1",
+    "@dicy/client": "^0.15.1",
     "atom-ts-transpiler": "^1.4.0",
     "command-join": "^2.0.0",
     "dbus-native": "^0.2.5",
@@ -60,9 +60,11 @@
     ]
   },
   "activationHooks": [
+    "language-knitr:grammar-used",
     "language-latex:grammar-used",
-    "language-tex:grammar-used",
-    "language-latexsimple:grammar-used"
+    "language-latexsimple:grammar-used",
+    "language-pweave:grammar-used",
+    "language-tex:grammar-used"
   ],
   "atomTranspilers": [
     {

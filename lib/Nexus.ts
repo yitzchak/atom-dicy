@@ -8,7 +8,7 @@ const url2path = require('file-uri-to-path')
 
 import { Opener, OpenerFeature } from './Opener'
 
-const SCOPE_PATTERN = /^(text\.tex(?:\.latex|\.latex\.knitr|\.latex\.haskell|\.latex\.agda)?|source.pweave.latex)$/
+const SCOPE_PATTERN = /^(text\.tex(?:\.latex|\.latex\.knitr|\.latex\.haskell|\.latex\.agda)?|source\.pweave\..*)$/
 
 function editorIsLaTeX (editor: TextEditor | undefined): boolean {
   return !!editor && SCOPE_PATTERN.test(editor.getRootScopeDescriptor().getScopesArray().join(''))
